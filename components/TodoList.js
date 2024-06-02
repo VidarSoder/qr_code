@@ -1,4 +1,3 @@
-'use client'
 import { useState, useEffect } from 'react';
 import QRCode from 'qrcode.react';
 
@@ -6,6 +5,8 @@ const TodoList = ({ initialItems }) => {
     const [items, setItems] = useState(initialItems || []);
     const [inputValue, setInputValue] = useState('');
     const [url, setUrl] = useState('');
+
+    const basePath = '/qr_code'; // Your base path here
 
     const addItem = () => {
         if (inputValue.trim()) {
@@ -21,7 +22,7 @@ const TodoList = ({ initialItems }) => {
 
     useEffect(() => {
         const query = new URLSearchParams({ items: JSON.stringify(items) }).toString();
-        setUrl(`${window.location.origin}?${query}`);
+        setUrl(`${window.location.origin}${basePath}?${query}`);
     }, [items]);
 
     return (
