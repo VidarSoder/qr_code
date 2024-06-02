@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import QRCode from 'qrcode.react';
 
-const TodoList = ({ initialItems }) => {
+const TodoList = ({ initialTitle = "vad finns I lådan", initialItems = [] }) => {
+    const [title, setTitle] = useState(initialTitle);
     const [items, setItems] = useState(initialItems || []);
     const [inputValue, setInputValue] = useState('');
     const [url, setUrl] = useState('');
@@ -22,12 +23,13 @@ const TodoList = ({ initialItems }) => {
 
     useEffect(() => {
         setItems(initialItems);
-    }, [initialItems]);
+        setTitle(initialTitle);
+    }, [initialItems, initialTitle]);
 
     useEffect(() => {
-        const query = new URLSearchParams({ items: JSON.stringify(items) }).toString();
+        const query = new URLSearchParams({ title, items: JSON.stringify(items) }).toString();
         setUrl(`${window.location.origin}${basePath}?${query}`);
-    }, [items]);
+    }, [title, items]);
 
     const handleCopy = () => {
         navigator.clipboard.writeText(url).then(() => {
@@ -39,7 +41,13 @@ const TodoList = ({ initialItems }) => {
 
     return (
         <div className="flex flex-col items-center p-6 bg-gray-100 min-h-screen">
-            <h1 className="text-3xl font-bold mb-6 text-gray-800">vad finns I lådan</h1>
+            <input
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Title"
+                className="text-3xl font-bold mb-6 text-gray-800 text-center p-2 border-b-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
             <div className="flex flex-col md:flex-row mb-6 w-full max-w-md">
                 <input
                     type="text"
@@ -75,7 +83,7 @@ const TodoList = ({ initialItems }) => {
                 <div className="mt-6 w-full max-w-md">
                     <h2 className="text-xl font-bold mb-2">QR Code</h2>
                     <div className="flex justify-center">
-                        <QRCode value={url} size="120" />
+                        <QRCode value={url} size={120} />
                     </div>
                 </div>
             )}
