@@ -6,7 +6,7 @@ const TodoList = ({ initialItems }) => {
     const [inputValue, setInputValue] = useState('');
     const [url, setUrl] = useState('');
 
-    const basePath = '/qr_code'; // Your base path here
+    const basePath = '/qr_code/'; // Your base path here
 
     const addItem = () => {
         if (inputValue.trim()) {
