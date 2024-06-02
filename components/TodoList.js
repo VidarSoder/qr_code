@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react';
 import QRCode from 'qrcode.react';
 
 const TodoList = ({ initialItems }) => {
+    console.log(initialItems, 'initial items');
     const [items, setItems] = useState(initialItems || []);
     const [inputValue, setInputValue] = useState('');
     const [url, setUrl] = useState('');
 
-    const basePath = '/qr_code/'; // Your base path here
+    const basePath = process.env.NODE_ENV === 'production' ? '/qr_code' : ''; // Use empty basePath for local testing
 
     const addItem = () => {
         if (inputValue.trim()) {
@@ -20,8 +21,14 @@ const TodoList = ({ initialItems }) => {
         setItems(newItems);
     };
 
+
+    useEffect(() => {
+        setItems(initialItems);
+    }, [initialItems]);
+
     useEffect(() => {
         const query = new URLSearchParams({ items: JSON.stringify(items) }).toString();
+        console.log(initialItems, ' this should be initlal items');
         setUrl(`${window.location.origin}${basePath}?${query}`);
     }, [items]);
 

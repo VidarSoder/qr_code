@@ -9,7 +9,12 @@ const Home = () => {
     const query = new URLSearchParams(window.location.search);
     const itemsParam = query.get('items');
     if (itemsParam) {
-      setItems(JSON.parse(itemsParam));
+      try {
+        console.log(itemsParam);
+        setItems(JSON.parse(itemsParam));
+      } catch (e) {
+        console.error('Error parsing items from URL', e);
+      }
     }
   }, []);
 
