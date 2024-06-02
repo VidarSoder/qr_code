@@ -75,7 +75,7 @@ const TodoList = ({ initialItems }) => {
                 <div className="mt-6 w-full max-w-md">
                     <h2 className="text-xl font-bold mb-2">QR Code</h2>
                     <div className="flex justify-center">
-                        <QRCode value={url} size="130" />
+                        <QRCode value={url} size="120" />
                     </div>
                 </div>
             )}
