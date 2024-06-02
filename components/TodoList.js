@@ -7,7 +7,7 @@ const TodoList = ({ initialItems }) => {
     const [inputValue, setInputValue] = useState('');
     const [url, setUrl] = useState('');
 
-    const basePath = process.env.NODE_ENV === 'production' ? '/qr_code' : ''; // Use empty basePath for local testing
+    const basePath = process.env.NODE_ENV === 'production' ? '/qr_code' : '/qr_code';
 
     const addItem = () => {
         if (inputValue.trim()) {
@@ -21,20 +21,27 @@ const TodoList = ({ initialItems }) => {
         setItems(newItems);
     };
 
-
     useEffect(() => {
         setItems(initialItems);
     }, [initialItems]);
 
     useEffect(() => {
         const query = new URLSearchParams({ items: JSON.stringify(items) }).toString();
-        console.log(initialItems, ' this should be initlal items');
+        console.log(initialItems, ' this should be initial items');
         setUrl(`${window.location.origin}${basePath}?${query}`);
     }, [items]);
 
+    const handleCopy = () => {
+        navigator.clipboard.writeText(url).then(() => {
+            alert('Link copied to clipboard!');
+        }).catch(err => {
+            console.error('Failed to copy: ', err);
+        });
+    };
+
     return (
         <div className="flex flex-col items-center p-6 bg-gray-100 min-h-screen">
-            <h1 className="text-2xl font-bold mb-4 text-gray-800">vad finns här</h1>
+            <h1 className="text-2xl font-bold mb-4 text-gray-800">Todo List</h1>
             <div className="flex mb-4">
                 <input
                     type="text"
@@ -71,6 +78,14 @@ const TodoList = ({ initialItems }) => {
                     <h2 className="text-xl font-bold mb-2">QR Code</h2>
                     <QRCode value={url} />
                 </div>
+            )}
+            {url && (
+                <button
+                    onClick={handleCopy}
+                    className="mt-4 p-2 bg-green-500 text-white rounded hover:bg-green-700"
+                >
+                    Copy Link
+                </button>
             )}
         </div>
     );
