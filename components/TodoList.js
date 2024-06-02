@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import QRCode from 'qrcode.react';
 
 const TodoList = ({ initialItems }) => {
-    console.log(initialItems, 'initial items');
     const [items, setItems] = useState(initialItems || []);
     const [inputValue, setInputValue] = useState('');
     const [url, setUrl] = useState('');
@@ -27,7 +26,6 @@ const TodoList = ({ initialItems }) => {
 
     useEffect(() => {
         const query = new URLSearchParams({ items: JSON.stringify(items) }).toString();
-        console.log(initialItems, ' this should be initial items');
         setUrl(`${window.location.origin}${basePath}?${query}`);
     }, [items]);
 
@@ -41,23 +39,23 @@ const TodoList = ({ initialItems }) => {
 
     return (
         <div className="flex flex-col items-center p-6 bg-gray-100 min-h-screen">
-            <h1 className="text-2xl font-bold mb-4 text-gray-800">Vad finns i lådan</h1>
-            <div className="flex mb-4">
+            <h1 className="text-3xl font-bold mb-6 text-gray-800">vad finns I lådan</h1>
+            <div className="flex flex-col md:flex-row mb-6 w-full max-w-md">
                 <input
                     type="text"
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     placeholder="Add new item"
-                    className="p-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="p-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500 flex-grow md:flex-grow-0 md:w-2/3"
                 />
                 <button
                     onClick={addItem}
-                    className="p-2 bg-blue-500 text-white rounded-r-lg hover:bg-blue-700"
+                    className="p-2 bg-blue-500 text-white rounded-r-lg hover:bg-blue-700 mt-2 md:mt-0 md:ml-2"
                 >
                     Add
                 </button>
             </div>
-            <ul className="list-none p-0">
+            <ul className="list-none p-0 w-full max-w-md">
                 {items.map((item, index) => (
                     <li
                         key={index}
@@ -74,9 +72,11 @@ const TodoList = ({ initialItems }) => {
                 ))}
             </ul>
             {url && (
-                <div className="mt-6">
+                <div className="mt-6 w-full max-w-md">
                     <h2 className="text-xl font-bold mb-2">QR Code</h2>
-                    <QRCode value={url} />
+                    <div className="flex justify-center">
+                        <QRCode value={url} size="130" />
+                    </div>
                 </div>
             )}
             {url && (
