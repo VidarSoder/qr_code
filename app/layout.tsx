@@ -1,17 +1,13 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+function DynamicTitle() {
   const searchParams = useSearchParams();
   const [pageTitle, setPageTitle] = useState("Vad finns i lådan");
 
@@ -36,13 +32,26 @@ export default function RootLayout({
     }
   }, [pageTitle]);
 
+  return null;
+}
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <html lang="en">
       <head>
-        <title>{pageTitle}</title>
+        <title>Vad finns i lådan</title>
         <meta name="description" content="Kolla vad för roligt som finns här!" />
       </head>
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <Suspense fallback={<div>Loading...</div>}>
+          <DynamicTitle />
+        </Suspense>
+        {children}
+      </body>
     </html>
   );
 }
