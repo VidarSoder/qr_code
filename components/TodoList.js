@@ -41,7 +41,7 @@ const TodoList = ({ initialItems }) => {
 
     return (
         <div className="flex flex-col items-center p-6 bg-gray-100 min-h-screen">
-            <h1 className="text-2xl font-bold mb-4 text-gray-800">Todo List</h1>
+            <h1 className="text-2xl font-bold mb-4 text-gray-800">Vad finns i lådan</h1>
             <div className="flex mb-4">
                 <input
                     type="text"
